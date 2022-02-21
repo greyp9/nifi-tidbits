@@ -20,18 +20,23 @@ if [ "$NIFI_NODES" = "" ]; then
   exit 1
 fi
 
+SAXON_FOLDER_GLOB=$HOME"/.m2/repository/net/sf/saxon/Saxon-HE/10.*"
+SAXON_FOLDER_LIST=($SAXON_FOLDER_GLOB)
+SAXON_LIST_LENGTH=${#SAXON_FOLDER_LIST[@]}
+SAXON_FOLDER_LATEST=${SAXON_FOLDER_LIST[$SAXON_LIST_LENGTH - 1]}
+SAXON_JAR=$SAXON_FOLDER_LATEST"/Saxon-HE-10.*.jar"
+
 if [ $SHELL = "/bin/sh" ]
 then
-  SAXON="java -jar $HOME/.m2/repository/net/sf/saxon/Saxon-HE/10.*/Saxon-HE-10.*.jar"
+  SAXON="java -jar $SAXON_JAR"
   SED="sed -i"
 elif [ $SHELL = "/bin/bash" ]
 then
-  SAXON="java -jar $HOME/.m2/repository/net/sf/saxon/Saxon-HE/10.*/Saxon-HE-10.*.jar"
+  SAXON="java -jar $SAXON_JAR"
   SED="sed -i"
 elif [ $SHELL = "/bin/zsh" ]
 then
-  # https://formulae.brew.sh/formula/saxon
-  SAXON="saxon"
+  SAXON="java -jar $SAXON_JAR"
   # https://unix.stackexchange.com/questions/401905/bsd-sed-vs-gnu-sed-and-i
   SED="sed -i ''"
 else

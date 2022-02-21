@@ -6,8 +6,6 @@
 ### Prerequisites
 - Java Development Kit (8 or 11)
 - Maven (3.6+)
-- (for MacOS) Saxon XSLT utility
-  - [Brew](https://formulae.brew.sh/formula/saxon)
 
 
 ### Usage (MacOS, Linux)
