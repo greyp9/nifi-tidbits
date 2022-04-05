@@ -1,0 +1,113 @@
+name: ci-i18n
+on: [push]
+
+env:
+  DEFAULT_MAVEN_OPTS: >-
+    -Dmaven.option1=1
+    -Dmaven.option2=2
+    -Dmaven.option3=3
+    -Dmaven.option4=4
+    -Dmaven.option5=5
+    -Dmaven.option6=6
+    -Dmaven.option7=7
+    -Dmaven.option8=8
+    -Dmaven.option9=9
+  MAVEN_COMMAND: >-
+    mvn -f i18n clean test
+
+jobs:
+  ubuntu-17:
+    runs-on: ubuntu-latest
+    name: Ubuntu Zulu JDK 17 EN
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Java 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Maven Build
+        env:
+          SUREFIRE_OPTS: >-
+            -Duser.language=en
+            -Duser.country=AU
+            -Duser.region=AU
+            -Duser.timezone=Australia/Melbourne
+          MAVEN_OPTS: >-
+            ${{ env.DEFAULT_MAVEN_OPTS }}
+            -DargLine=${env.SUREFIRE_OPTS}
+        run: >
+          ${{ env.MAVEN_COMMAND }}
+
+  ubuntu-11:
+    runs-on: ubuntu-latest
+    name: Ubuntu Zulu JDK 11 EN
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Java 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Maven Build
+        env:
+          SUREFIRE_OPTS: >-
+            -Duser.language=hi
+            -Duser.country=IN
+            -Duser.region=IN
+            -Duser.timezone=Asia/Kolkata
+          MAVEN_OPTS: >-
+            ${{ env.DEFAULT_MAVEN_OPTS }}
+            -DargLine=${env.SUREFIRE_OPTS}
+        run: >
+          ${{ env.MAVEN_COMMAND }}
+
+  macos:
+    runs-on: macos-latest
+    name: MacOS Adopt JDK 8 JP
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Java 8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+      - name: Maven Build
+        env:
+          SUREFIRE_OPTS: >-
+            -Duser.language=ja
+            -Duser.country=JP
+            -Duser.region=JP
+            -Duser.timezone=Asia/Tokyo
+          MAVEN_OPTS: >-
+            ${{ env.DEFAULT_MAVEN_OPTS }}
+            -DargLine=${env.SUREFIRE_OPTS}
+        run: >
+          ${{ env.MAVEN_COMMAND }}
+
+  windows:
+    runs-on: windows-latest
+    name: Windows Zulu JDK 8 FR
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Java 8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+      - name: Maven Build
+        env:
+          SUREFIRE_OPTS: >-
+            -Duser.language=fr
+            -Duser.country=FR
+            -Duser.region=FR
+            -Duser.timezone=Europe/Paris
+          MAVEN_OPTS: >-
+            ${{ env.DEFAULT_MAVEN_OPTS }}
+            -DargLine=${env.SUREFIRE_OPTS}
+        run: >
+          ${{ env.MAVEN_COMMAND }}
