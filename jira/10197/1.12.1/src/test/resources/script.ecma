@@ -1,0 +1,5 @@
+flowFile = session.get();
+var xyzId = flowFile.getAttribute('xyzId');
+log.info(xyzId);
+flowFile = session.putAttribute(flowFile, "from-script", "mynewattribute")
+session.transfer(flowFile, REL_SUCCESS)
