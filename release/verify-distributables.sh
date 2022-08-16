@@ -1,25 +1,18 @@
 #!/bin/bash
 
-DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-1.16.2
-DIST_TARGET=~/Downloads/NIFI/1.16.2
+DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-1.17.0
+DIST_TARGET=~/Downloads/NIFI/1.17.0
 
 BINARIES=(
-  "minifi-1.16.2-bin.tar.gz"
-  "minifi-1.16.2-bin.zip"
-  "minifi-c2-1.16.2-bin.tar.gz"
-  "minifi-c2-1.16.2-bin.zip"
-  "minifi-toolkit-1.16.2-bin.tar.gz"
-  "minifi-toolkit-1.16.2-bin.zip"
-  "nifi-1.16.2-bin.tar.gz"
-  "nifi-1.16.2-bin.zip"
-  "nifi-1.16.2-source-release.zip"
-  "nifi-registry-1.16.2-bin.tar.gz"
-  "nifi-registry-1.16.2-bin.zip"
-  "nifi-registry-toolkit-1.16.2-bin.tar.gz"
-  "nifi-registry-toolkit-1.16.2-bin.zip"
-  "nifi-stateless-1.16.2-bin.tar.gz"
-  "nifi-toolkit-1.16.2-bin.tar.gz"
-  "nifi-toolkit-1.16.2-bin.zip"
+  "minifi-1.17.0-bin.zip"
+  "minifi-c2-1.17.0-bin.zip"
+  "minifi-toolkit-1.17.0-bin.zip"
+  "nifi-1.17.0-bin.zip"
+  "nifi-1.17.0-source-release.zip"
+  "nifi-registry-1.17.0-bin.zip"
+  "nifi-registry-toolkit-1.17.0-bin.zip"
+  "nifi-stateless-1.17.0-bin.zip"
+  "nifi-toolkit-1.17.0-bin.zip"
 )
 
 EXTENSIONS=(
