@@ -44,6 +44,12 @@ else
   exit 1
 fi
 
+# explode "nifi-toolkit-assembly" (counteract NIFI-5402, maybe fix?)
+cd $NIFI_ROOT"/nifi-toolkit/nifi-toolkit-assembly/target"
+unzip nifi-toolkit-1.18.0-SNAPSHOT-bin.zip
+mkdir nifi-toolkit-1.18.0-SNAPSHOT-bin
+mv nifi-toolkit-1.18.0-SNAPSHOT nifi-toolkit-1.18.0-SNAPSHOT-bin
+
 NIFI_TOOLKIT_DIR=$NIFI_ROOT"/nifi-toolkit/nifi-toolkit-assembly/target/nifi-toolkit*bin/nifi-toolkit*"
 NIFI_IMAGE_DIR=$NIFI_ROOT"/nifi-assembly/target/nifi*bin/nifi*"
 
