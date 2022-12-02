@@ -4,14 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.nifi.greyp9</groupId>
     <artifactId>nifi-kafka-bundle</artifactId>
-    <version>1.19.0-SNAPSHOT</version>
+    <version>1.20.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
-        <junit.version>5.8.2</junit.version>
+        <junit.version>5.9.1</junit.version>
+        <nifi.version>${project.version}</nifi.version>
         <org.slf4j.version>1.7.36</org.slf4j.version>
     </properties>
 
@@ -51,18 +53,5 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${org.slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependencies/>
 </project>
