@@ -62,6 +62,13 @@
             <version>${nifi.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.nifi.greyp9</groupId>
+            <artifactId>nifi-kafka-api</artifactId>
+            <version>${nifi.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>3.0.2</version>

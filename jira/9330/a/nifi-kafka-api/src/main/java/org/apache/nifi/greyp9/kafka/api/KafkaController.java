@@ -1,8 +1,17 @@
 package org.apache.nifi.greyp9.kafka.api;
 
-public interface KafkaController {
+import org.apache.nifi.greyp9.kafka.api.consumer.NifiConsumerRecord;
+import org.apache.nifi.greyp9.kafka.api.producer.NifiProducerRecord;
 
-    void publishOne(String value);
+public interface KafkaController<K, V> {
 
-    public String consumeOne();
+    //NifiProducer<K, V> getProducer();
+
+    void publishValue(V value, String topic);
+
+    void publishRecord(NifiProducerRecord<K, V> record);
+
+    V consumeValue(String topic);
+
+    NifiConsumerRecord<K, V> consumeRecord(String topic);
 }
