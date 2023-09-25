@@ -24,6 +24,7 @@
                     <!-- sometimes to file, sometimes to console -->
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
                     <systemPropertyVariables>
+                        <!-- <javax.net.debug>all</javax.net.debug> -->
                         <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
                     </systemPropertyVariables>
                 </configuration>

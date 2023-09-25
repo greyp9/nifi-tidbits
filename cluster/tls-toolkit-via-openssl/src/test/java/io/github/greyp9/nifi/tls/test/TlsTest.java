@@ -7,7 +7,6 @@ import org.apache.nifi.security.util.StandardTlsConfiguration;
 import org.apache.nifi.security.util.TemporaryKeyStoreBuilder;
 import org.apache.nifi.security.util.TlsConfiguration;
 import org.apache.nifi.security.util.TlsException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +34,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TlsTest {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * If server uses normal keystore / truststore, but client uses a temporary keystore, we expect failure to
+     * establish trust relationship.
+     */
     @Test
-    @Disabled("need to get success case with 'needClientAuth()' working")
     void testConnectFailKeyMismatch() throws InterruptedException {
         final ExecutorService executorService = Executors.newFixedThreadPool(2, Executors.defaultThreadFactory());
 
         final TlsConfiguration tlsConfigurationServer = new StandardTlsConfiguration(
                 "nifi1.pkcs12", "1234", KeystoreType.PKCS12,
-                "nifi2.pkcs12", "1234", KeystoreType.PKCS12);
+                "trust.pkcs12", "123456", KeystoreType.PKCS12);
         final ServerRunnable serverRunnable = new ServerRunnable(tlsConfigurationServer);
         executorService.execute(serverRunnable);
 
@@ -62,14 +64,17 @@ public class TlsTest {
         assertTrue(clientRunnable.getException().getMessage().contains("PKIX path building failed"));
     }
 
+    /**
+     * If server uses normal keystore / truststore, but client has truststore only, we expect SSL mutual authentication
+     * to fail.
+     */
     @Test
-    @Disabled("need to get success case with 'needClientAuth()' working")
     void testConnectFailNeedClientAuth() throws InterruptedException {
         final ExecutorService executorService = Executors.newFixedThreadPool(2, Executors.defaultThreadFactory());
 
         final TlsConfiguration tlsConfigurationServer = new StandardTlsConfiguration(
                 "nifi1.pkcs12", "1234", KeystoreType.PKCS12,
-                "nifi2.pkcs12", "1234", KeystoreType.PKCS12);
+                "trust.pkcs12", "123456", KeystoreType.PKCS12);
         final ServerRunnable serverRunnable = new ServerRunnable(tlsConfigurationServer);
         executorService.execute(serverRunnable);
 
@@ -90,13 +95,16 @@ public class TlsTest {
         assertTrue(clientRunnable.getException().getMessage().contains("readHandshakeRecord"));
     }
 
+    /**
+     * SSL mutual authentication test case, where truststore is of type PKCS12 (created using keytool).
+     */
     @Test
-    void testConnectSuccess() throws InterruptedException {
+    void testConnectSuccessPKCSTrust() throws InterruptedException {
         final ExecutorService executorService = Executors.newFixedThreadPool(2, Executors.defaultThreadFactory());
 
         final TlsConfiguration tlsConfigurationServer = new StandardTlsConfiguration(
                 "nifi1.pkcs12", "1234", KeystoreType.PKCS12,
-                "nifi2.pkcs12", "1234", KeystoreType.PKCS12);
+                "trust.pkcs12", "123456", KeystoreType.PKCS12);
         final ServerRunnable serverRunnable = new ServerRunnable(tlsConfigurationServer);
         executorService.execute(serverRunnable);
 
@@ -105,7 +113,36 @@ public class TlsTest {
 
         final TlsConfiguration tlsConfigurationClient = new StandardTlsConfiguration(
                 "nifi2.pkcs12", "1234", KeystoreType.PKCS12,
-                "nifi1.pkcs12", "1234", KeystoreType.PKCS12);
+                "trust.pkcs12", "123456", KeystoreType.PKCS12);
+        final ClientRunnable clientRunnable = new ClientRunnable(tlsConfigurationClient, port);
+        executorService.execute(clientRunnable);
+
+        executorService.shutdown();
+        final boolean terminated = executorService.awaitTermination(300000L, TimeUnit.MILLISECONDS);
+        assertTrue(terminated);
+        assertNull(serverRunnable.getException());
+        assertNull(clientRunnable.getException());
+    }
+
+    /**
+     * SSL mutual authentication test case, where truststore is of type JKS (created using keytool).
+     */
+    @Test
+    void testConnectSuccessJKSTrust() throws InterruptedException {
+        final ExecutorService executorService = Executors.newFixedThreadPool(2, Executors.defaultThreadFactory());
+
+        final TlsConfiguration tlsConfigurationServer = new StandardTlsConfiguration(
+                "nifi1.pkcs12", "1234", KeystoreType.PKCS12,
+                "trust.jks", "123456", KeystoreType.JKS);
+        final ServerRunnable serverRunnable = new ServerRunnable(tlsConfigurationServer);
+        executorService.execute(serverRunnable);
+
+        Thread.sleep(1000L);  // allow server to start
+        final int port = serverRunnable.getPort();
+
+        final TlsConfiguration tlsConfigurationClient = new StandardTlsConfiguration(
+                "nifi2.pkcs12", "1234", KeystoreType.PKCS12,
+                "trust.jks", "123456", KeystoreType.JKS);
         final ClientRunnable clientRunnable = new ClientRunnable(tlsConfigurationClient, port);
         executorService.execute(clientRunnable);
 
@@ -141,19 +178,17 @@ public class TlsTest {
                 final SSLContext sslContext = SslContextFactory.createSslContext(tlsConfiguration);
                 try (final ServerSocket serverSocket = sslContext.getServerSocketFactory().createServerSocket(0, 0)) {
                     port = serverSocket.getLocalPort();
+                    logger.trace("SERVER RUNNING ON PORT {}", port);
                     try (final Socket socket = serverSocket.accept()) {
-                        logger.trace("GOT A SOCKET: {}", socket);
+                        logger.trace("GOT A CLIENT CONNECTION: {}", socket);
 
                         if (socket instanceof SSLSocket) {
                             final SSLSocket sslSocket = (SSLSocket) socket;
-                            //sslSocket.setUseClientMode(true);
                             sslSocket.setNeedClientAuth(true);
-                            //logger.info("GOT AN SSL SOCKET: {}", sslSocket.getSession());
                         }
 
                         final InputStream is = new BufferedInputStream(socket.getInputStream());
                         final OutputStream os = new BufferedOutputStream(socket.getOutputStream());
-                        logger.trace("SERVER STREAMS");
 
                         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         // loop until we get some data
@@ -199,14 +234,13 @@ public class TlsTest {
         @Override
         public void run() {
             try {
-                //logger.info("CLIENT RUNNING");
+                logger.trace("CLIENT RUNNING");
                 final SSLContext sslContext = SslContextFactory.createSslContext(tlsConfiguration);
                 try (final Socket socket = sslContext.getSocketFactory().createSocket("localhost", port)) {
-                    //socket.setTcpNoDelay(true);
+                    logger.trace("GOT A SERVER CONNECTION: {}", socket);
 
                     final InputStream is = new BufferedInputStream(socket.getInputStream());
                     final OutputStream os = new BufferedOutputStream(socket.getOutputStream());
-                    logger.info("CLIENT STREAMS");
 
                     final byte[] payloadSend = "hello from client".getBytes(StandardCharsets.UTF_8);
                     os.write(payloadSend, 0, payloadSend.length);

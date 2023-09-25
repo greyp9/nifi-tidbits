@@ -6,7 +6,6 @@
 ### OpenSSL Version that Does Not Support "subjectAltName"
 `LibreSSL 2.8.3`
 
-
 ```
 - certificate authority
 openssl genrsa -aes256 -out ca.key 3072
@@ -24,7 +23,18 @@ openssl x509 -req -in nifi1.csr -CA ca.cer -CAkey ca.key -CAcreateserial -out ni
 - one of these for each cluster node
 cat ca.cer nifi1.cer >nifi1.chain.cer
 
-- certificate authority
-openssl pkcs12 -export -out trust.pkcs12 -in ca.cer -nokeys
+- certificate authority (truststore, JKS or PKCS12
+# openssl pkcs12 -export -out trust.pkcs12 -in ca.cer -nokeys
+# keytool -importcert -keystore trust.jks -file ca.cer -alias 1
+keytool -importcert -keystore trust.pkcs12 -storetype PKCS12 -file ca.cer -alias 1
+
 - one of these for each cluster node
 openssl pkcs12 -export -out nifi1.pkcs12 -inkey nifi1.key -in nifi1.chain.cer
+```
+
+### Notes
+- https://stackoverflow.com/questions/52524948/created-java-truststore-p12-using-only-openssl
+- https://angelborroy.wordpress.com/2022/08/12/building-a-custom-pkcs12-truststore-for-java/
+- https://github.com/openssl/openssl/pull/19025
+- https://github.com/openssl/openssl/issues/21784
+- https://github.com/openssl/openssl/discussions/21791
