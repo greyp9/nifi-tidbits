@@ -1,18 +1,19 @@
 #!/bin/bash
 
-DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-1.17.0
-DIST_TARGET=~/Downloads/NIFI/1.17.0
+DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-2.0.0-M1
+DIST_TARGET=~/Downloads/NIFI/2.0.0-M1
 
 BINARIES=(
-  "minifi-1.17.0-bin.zip"
-  "minifi-c2-1.17.0-bin.zip"
-  "minifi-toolkit-1.17.0-bin.zip"
-  "nifi-1.17.0-bin.zip"
-  "nifi-1.17.0-source-release.zip"
-  "nifi-registry-1.17.0-bin.zip"
-  "nifi-registry-toolkit-1.17.0-bin.zip"
-  "nifi-stateless-1.17.0-bin.zip"
-  "nifi-toolkit-1.17.0-bin.zip"
+  "minifi-2.0.0-M1-bin.zip"
+  "minifi-c2-2.0.0-M1-bin.zip"
+  "minifi-toolkit-2.0.0-M1-bin.zip"
+  "nifi-2.0.0-M1-bin.zip"
+  "nifi-2.0.0-M1-source-release.zip"
+  "nifi-kafka-connector-assembly-2.0.0-M1.zip"
+  "nifi-registry-2.0.0-M1-bin.zip"
+  "nifi-registry-toolkit-2.0.0-M1-bin.zip"
+  "nifi-stateless-2.0.0-M1-bin.zip"
+  "nifi-toolkit-2.0.0-M1-bin.zip"
 )
 
 EXTENSIONS=(
@@ -20,6 +21,8 @@ EXTENSIONS=(
   "sha256"
   "sha512"
 )
+
+mkdir $DIST_TARGET
 
 for BINARY in "${BINARIES[@]}"; do
   echo $BINARY
