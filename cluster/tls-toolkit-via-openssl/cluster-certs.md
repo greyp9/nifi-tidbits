@@ -26,10 +26,10 @@ cat ca.cer nifi1.cer >nifi1.chain.cer
 - certificate authority (truststore, JKS or PKCS12
 # openssl pkcs12 -export -out trust.pkcs12 -in ca.cer -nokeys
 # keytool -importcert -keystore trust.jks -file ca.cer -alias 1
-keytool -importcert -keystore trust.pkcs12 -storetype PKCS12 -file ca.cer -alias 1
+keytool -importcert -keystore trust.p12 -storetype PKCS12 -file ca.cer -alias 1
 
 - one of these for each cluster node
-openssl pkcs12 -export -out nifi1.pkcs12 -inkey nifi1.key -in nifi1.chain.cer
+openssl pkcs12 -export -out nifi1.p12 -inkey nifi1.key -in nifi1.chain.cer
 ```
 
 ### Notes
