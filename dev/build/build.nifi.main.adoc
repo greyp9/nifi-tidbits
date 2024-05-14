@@ -1,0 +1,31 @@
+= Build `apache/nifi/main` From Source
+
+* https://nifi.apache.org[NiFi Home]
+* https://github.com/apache/nifi[NiFi (github)]
+
+== Alpine Docker Container (May 2024)
+
+=== Start a Fresh Alpine Docker Container
+1. `docker container run --platform=linux/amd64 --entrypoint="" --rm -it --pull always -v "$PWD":/work --workdir="/work" alpine sh`
+
+=== Augment Alpine Docker Container
+
+==== (option A: From Source Release)
+1. `apk update`
+1. `apk add openjdk17-jdk wget bash build-base`
+1. `wget https://github.com/apache/nifi/archive/refs/tags/rel/nifi-1.26.0.tar.gz`
+1. `tar xvzf nifi-1.26.0.tar.gz`
+1. `cd nifi-rel-nifi-1.26.0/`
+
+==== (option B: From Git)
+1. `apk update`
+1. `apk add openjdk17-jdk git bash build-base`
+1. `git clone https://github.com/apache/nifi.git`
+1. `cd nifi/`
+
+=== Build
+1. `./mvnw clean install -DskipTests --no-transfer-progress -pl -:nifi-hive-nar`
+
+=== Notes
+* There is probably a way to enable build of module `nifi-hive-nar`.
+* https://apachenifi.slack.com/archives/C0L9S92JY/p1715590470596189[apachenifi Slack thread]
