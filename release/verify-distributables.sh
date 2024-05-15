@@ -1,20 +1,18 @@
 #!/bin/bash
 
-DIST_SOURCE=https://downloads.apache.org/nifi/2.0.0-M2
+DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-2.0.0-M3
 
-DIST_TARGET=~/Downloads/NIFI/2.0.0-M2
+DIST_TARGET=~/Downloads/NIFI/2.0.0-M3
 
 BINARIES=(
-  "minifi-2.0.0-M2-bin.zip"
-  "minifi-c2-2.0.0-M2-bin.zip"
-  "minifi-toolkit-2.0.0-M2-bin.zip"
-  "nifi-2.0.0-M2-bin.zip"
-  "nifi-2.0.0-M2-source-release.zip"
-  "nifi-kafka-connector-assembly-2.0.0-M2.zip"
-  "nifi-registry-2.0.0-M2-bin.zip"
-  "nifi-registry-toolkit-2.0.0-M2-bin.zip"
-  "nifi-stateless-2.0.0-M2-bin.zip"
-  "nifi-toolkit-2.0.0-M2-bin.zip"
+  "minifi-2.0.0-M3-bin.zip"
+  "minifi-toolkit-2.0.0-M3-bin.zip"
+  "nifi-2.0.0-M3-bin.zip"
+  "nifi-2.0.0-M3-source-release.zip"
+  "nifi-registry-2.0.0-M3-bin.zip"
+  "nifi-registry-toolkit-2.0.0-M3-bin.zip"
+  "nifi-stateless-2.0.0-M3-bin.zip"
+  "nifi-toolkit-2.0.0-M3-bin.zip"
 )
 
 EXTENSIONS=(
