@@ -1,0 +1,5 @@
+=== Server
+* `java -Dtls.dir=./tls-dir -jar target/tls-server-0.0.0.jar`
+
+=== Client
+* `java -Dtls.dir=./tls-dir -jar target/tls-client-0.0.0.jar 12345`
