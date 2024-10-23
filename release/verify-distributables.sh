@@ -1,23 +1,22 @@
 #!/bin/bash
 
-DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-2.0.0-M3
+DIST_SOURCE=https://dist.apache.org/repos/dist/dev/nifi/nifi-2.0.0
 
-DIST_TARGET=~/Downloads/NIFI/2.0.0-M3
+DIST_TARGET=~/Downloads/NIFI/2.0.0
 
 BINARIES=(
-  "minifi-2.0.0-M3-bin.zip"
-  "minifi-toolkit-2.0.0-M3-bin.zip"
-  "nifi-2.0.0-M3-bin.zip"
-  "nifi-2.0.0-M3-source-release.zip"
-  "nifi-registry-2.0.0-M3-bin.zip"
-  "nifi-registry-toolkit-2.0.0-M3-bin.zip"
-  "nifi-stateless-2.0.0-M3-bin.zip"
-  "nifi-toolkit-2.0.0-M3-bin.zip"
+  "minifi-2.0.0-bin.zip"
+  "minifi-toolkit-2.0.0-bin.zip"
+  "nifi-2.0.0-bin.zip"
+  "nifi-2.0.0-source-release.zip"
+  "nifi-registry-2.0.0-bin.zip"
+  "nifi-registry-toolkit-2.0.0-bin.zip"
+  "nifi-stateless-2.0.0-bin.zip"
+  "nifi-toolkit-2.0.0-bin.zip"
 )
 
 EXTENSIONS=(
   "asc"
-  "sha256"
   "sha512"
 )
 
@@ -39,7 +38,6 @@ for BINARY in "${BINARIES[@]}"; do
     fi
   done
 
-  echo "$(cat $TARGET.sha256) $TARGET" | sha256sum --check
   echo "$(cat $TARGET.sha512) $TARGET" | sha512sum --check
   gpg --verify $TARGET.asc
 done
