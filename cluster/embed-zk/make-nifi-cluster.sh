@@ -20,7 +20,7 @@ if [ "$NIFI_NODES" = "" ]; then
   exit 1
 fi
 
-SAXON_FOLDER_GLOB=$HOME"/.m2/repository/net/sf/saxon/Saxon-HE/10.*"
+SAXON_FOLDER_GLOB=$HOME"/.m2/repository/net/sf/saxon/Saxon-HE/10.6*"
 SAXON_FOLDER_LIST=($SAXON_FOLDER_GLOB)
 SAXON_LIST_LENGTH=${#SAXON_FOLDER_LIST[@]}
 SAXON_FOLDER_LATEST=${SAXON_FOLDER_LIST[$SAXON_LIST_LENGTH - 1]}
