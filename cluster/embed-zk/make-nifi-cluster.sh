@@ -66,23 +66,24 @@ for n in `seq 1 $NIFI_NODES`; do
   cp -R $NIFI_IMAGE_DIR $NIFI_CLUSTER_DIR/nifi$n
   cp -R $NIFI_OPENSSL_DIR/nifi$n/*.* $NIFI_CLUSTER_DIR/nifi$n/conf
 
-  $SED 's/nifi.cluster.flow.election.max.candidates=/nifi.cluster.flow.election.max.candidates='"$NIFI_NODES"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.flow.election.max.wait.time=5 mins/nifi.cluster.flow.election.max.wait.time=2 min/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.is.node=false/nifi.cluster.is.node=true/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.protocol.is.secure=false/nifi.cluster.protocol.is.secure=true/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.load.balance.host=/nifi.cluster.load.balance.host=localhost/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.load.balance.port=6342/nifi.cluster.load.balance.port=634${n}/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.node.address=/nifi.cluster.node.protocol.address=localhost/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.cluster.node.protocol.port=/nifi.cluster.node.protocol.port=1144${n}/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.remote.input.host=/nifi.remote.input.host=localhost/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.remote.input.socket.port=/nifi.remote.input.socket.port=1044${n}/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.sensitive.props.key=/nifi.sensitive.props.key=this-is-my-sensitive-props-key/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.state.management.embedded.zookeeper.start=false/nifi.state.management.embedded.zookeeper.start=true/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.web.https.host=127.0.0.1/nifi.web.https.host=localhost/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.web.https.port=8443/nifi.web.https.port=944${n}/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.security.truststorePasswd=/nifi.security.truststorePasswd=$NIFI_OPENSSL_PASSPHRASE/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.security.keystorePasswd=/nifi.security.keystorePasswd=$NIFI_OPENSSL_PASSPHRASE/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
-  $SED "s/nifi.security.keyPasswd=/nifi.security.keyPasswd=$NIFI_OPENSSL_PASSPHRASE/g" $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.flow.election.max.candidates=.*$/nifi.cluster.flow.election.max.candidates='"$NIFI_NODES"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.flow.election.max.wait.time=.*$/nifi.cluster.flow.election.max.wait.time=2 min/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.is.node=.*$/nifi.cluster.is.node=true/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.protocol.is.secure=.*$/nifi.cluster.protocol.is.secure=true/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.load.balance.host=.*$/nifi.cluster.load.balance.host=localhost/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.load.balance.port=.*$/nifi.cluster.load.balance.port=634'"${n}"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.node.protocol.address=.*$/nifi.cluster.node.protocol.address=localhost/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.cluster.node.protocol.port=.*$/nifi.cluster.node.protocol.port=1144'"${n}"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.remote.input.host=.*$/nifi.remote.input.host=localhost/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.remote.input.socket.port=.*$/nifi.remote.input.socket.port=1044'"${n}"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.sensitive.props.key=$/nifi.sensitive.props.key=this-is-my-sensitive-props-key/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.state.management.embedded.zookeeper.start=.*$/nifi.state.management.embedded.zookeeper.start=true/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.web.https.host=.*$/nifi.web.https.host=localhost/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.web.https.port=.*$/nifi.web.https.port=944'"${n}"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.security.truststorePasswd=.*$/nifi.security.truststorePasswd='"$NIFI_OPENSSL_PASSPHRASE"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.security.keystorePasswd=.*$/nifi.security.keystorePasswd='"$NIFI_OPENSSL_PASSPHRASE"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED 's/nifi.security.keyPasswd=.*$/nifi.security.keyPasswd='"$NIFI_OPENSSL_PASSPHRASE"'/g' $NIFI_CLUSTER_DIR/nifi$n/conf/nifi.properties
+  $SED -e $'$a\\\njava.arg.svr.mgmt=-Dorg.apache.nifi.management.server.address=localhost:5202'"${n}" $NIFI_CLUSTER_DIR/nifi$n/conf/bootstrap.conf
 
   # nifi properties
 
